@@ -41,6 +41,9 @@ This approach involves building a *native* search bar within the main Workday UI
 
 Critically, this approach **must retain the full power of "Smart Search"**. The `GET /api/v1/sessions/search` endpoint queries the complete index, including spoken words (ASR), on-screen text (OCR), and slide content.
 
+<img width="1127" height="363" alt="image" src="https://github.com/user-attachments/assets/ba69ed2c-a75f-498b-b0c3-b3bafebeffa0" />
+
+
 This is however a more complex integration, as the custom search bar would need to:
 
 1.  **Capture query:** Capture the user's query from the Workday UI.
