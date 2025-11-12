@@ -39,12 +39,10 @@ The Workday UI uses the retrieved `EmbedUrl` as the `src` for an `iframe`, rende
 
 ```
 <iframe
-  src="https://<your-panopto-site>/Panopto/Pages/Embed.aspx?id=26262a42-c51b-486d-9193-ab0d0151a14f"
+  src="https://<your-panopto-site>/Panopto/Pages/EmbeddedList.aspx?folderID=b36925af-fa27-4ec2-a64c-b39201022610&embedded=1"
   width="770"
   height="433"
-  style="border: 1px solid #464646;"
-  allowfullscreen
-  allow="autoplay">
+  style="border: 0;">
 </iframe>
 ```
 ---
