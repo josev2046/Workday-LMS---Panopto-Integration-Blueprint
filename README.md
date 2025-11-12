@@ -1,6 +1,6 @@
 # Workday LMS - Panopto Integration Blueprint
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17590239.svg)](https://doi.org/10.5281/zenodo.17590239)
+![Zenodo DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17590239.svg)
 
 ## Overview
 
