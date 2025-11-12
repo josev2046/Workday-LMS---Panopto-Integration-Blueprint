@@ -59,3 +59,37 @@ Embed_API --> User: Player jumps to the specified time
 deactivate Embed_API
 
 @enduml
+
+--
+
+@startuml
+title Federated Search Workflow
+hide footbox
+
+actor User
+participant "Workday LMS (Custom UI)" as LMS_UI
+participant "Enterprise Search Index" as SearchIndex
+participant "Panopto Embed Player" as Player
+
+User -> LMS_UI: Submits query to native Workday search bar
+activate LMS_UI
+
+LMS_UI -> SearchIndex: 1. Query(searchQuery, userContext)
+activate SearchIndex
+SearchIndex --> LMS_UI: Returns unified SearchResults JSON\n(with links to videos, docs, etc.)
+deactivate SearchIndex
+
+LMS_UI --> User: Renders custom list of unified results
+deactivate LMS_UI
+
+User -> LMS_UI: Clicks on a Panopto video result
+activate LMS_UI
+
+LMS_UI -> Player: 2. Renders <iframe src="Video_Embed_Url">
+deactivate LMS_UI
+
+activate Player
+Player --> User: Player loads and plays video
+deactivate Player
+
+@enduml
