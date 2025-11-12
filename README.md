@@ -63,6 +63,9 @@ While this method provides the most deeply integrated feel, it represents a sign
 
 This approach utilises a separate, pre-indexing process to integrate Panopto search data into a central enterprise search index, rather than querying the Panopto API in real-time. This is the architecture supported by the `panopto-index-connector` repository.
 
+<img width="884" height="363" alt="image" src="https://github.com/user-attachments/assets/0bd6d60b-6b8d-4b13-980e-d7aec59d000d" />
+
+
 This model fundamentally changes the integration architecture:
 
 1.  **Indexing Service:** A separate service (e.g., the `panopto-index-connector`) runs on a schedule. It queries Panopto, extracts all relevant metadata—including spoken words (ASR), on-screen text (OCR), and slide content—and "pushes" this data into an external search index (such as Microsoft Graph, Coveo, or Attivio).
