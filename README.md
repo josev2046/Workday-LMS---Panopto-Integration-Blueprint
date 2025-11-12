@@ -61,4 +61,8 @@ While this method provides the most deeply integrated feel, it represents a sign
 
 * **Panopto embed API:** <https://github.com/josev2046/Panopto-Embed-API-Lab>
 
+* **About smart search:** <https://support.panopto.com/s/article/smart-search-faq>
+
+* **About folders:** <https://support.panopto.com/s/article/How-to-Embed-a-Folder-into-a-Webpage>
+  
 
