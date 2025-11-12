@@ -58,3 +58,7 @@ While this method provides the most deeply integrated feel, it represents a sign
 * **Panopto REST API Documentation:** <https://demo.hosted.panopto.com/Panopto/api/docs/index.html> (Note: Replace `demo.hosted.panopto.com` with your organisation's Panopto URL).
 
 * **Panopto Index Connector Example:** <https://github.com/Panopto/panopto-index-connector>
+
+* **Panopto embed API:** <https://github.com/josev2046/Panopto-Embed-API-Lab>
+
+
