@@ -36,9 +36,9 @@ The `EmbedUrl` provided by the API renders the standard Panopto folder page. Thi
 
 This approach involves building a *native* search bar within the main Workday UI, separate from the embedded Panopto folder.
 
-Critically, this approach **retains the full power of "Smart Search"**. The `GET /api/v1/sessions/search` endpoint queries the complete index, including spoken words (ASR), on-screen text (OCR), and slide content.
+Critically, this approach **must retain the full power of "Smart Search"**. The `GET /api/v1/sessions/search` endpoint queries the complete index, including spoken words (ASR), on-screen text (OCR), and slide content.
 
-This is a more complex integration, as the custom search bar would need to:
+This is however a more complex integration, as the custom search bar would need to:
 
 1.  **Capture query:** Capture the user's query from the Workday UI.
 
