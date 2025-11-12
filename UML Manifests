@@ -1,0 +1,61 @@
+@startuml
+title Folder Embedding Workflow
+hide footbox
+
+actor User
+participant "Workday LMS (Custom UI)" as LMS
+participant "Panopto REST API" as API
+participant "Panopto Embedded Folder (iframe)" as EmbeddedUI
+
+User -> LMS: Views page with Panopto content
+
+activate LMS
+LMS -> API: 1. GET /api/v1/folders/search (or /creator)
+activate API
+API --> LMS: Returns FolderList (with FolderId)
+deactivate API
+
+LMS -> API: 2. GET /api/v1/folders/{id}
+activate API
+API --> LMS: Returns FolderDetails (with Urls.EmbedUrl)
+deactivate API
+
+LMS --> User: Renders <iframe src="Urls.EmbedUrl">
+deactivate LMS
+
+User -> EmbeddedUI: Interacts with embedded folder view
+@enduml
+
+--
+
+@startuml
+title Custom API-Driven Search Workflow
+hide footbox
+
+actor User
+participant "Workday LMS (Custom UI)" as LMS_UI
+participant "Panopto REST API" as REST_API
+participant "Panopto Embed API (Player)" as Embed_API
+
+User -> LMS_UI: Submits query to native Workday search bar
+activate LMS_UI
+
+LMS_UI -> REST_API: 1. GET /api/v1/sessions/search\n   ?searchQuery=...&includeFields=Context
+activate REST_API
+REST_API --> LMS_UI: Returns SearchResults JSON (with sessions and timecodes)
+deactivate REST_API
+
+LMS_UI --> User: Renders custom list of results (e.g., "Video A at 05:30")
+deactivate LMS_UI
+
+User -> LMS_UI: Clicks on a timecode-specific result
+activate LMS_UI
+
+LMS_UI -> Embed_API: 2. Calls player.seekTo(time_in_seconds)
+deactivate LMS_UI
+
+activate Embed_API
+Embed_API --> User: Player jumps to the specified time
+deactivate Embed_API
+
+@enduml
