@@ -1,5 +1,7 @@
 # Workday LMS - Panopto Integration Blueprint
 
+https://doi.org/10.5281/zenodo.17590239
+
 ## Overview
 
 This repository provides a high level architectural blueprint for integrating the Panopto video platform within the Workday Learning Management System (LMS).
