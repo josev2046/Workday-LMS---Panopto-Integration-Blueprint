@@ -10,6 +10,9 @@ The primary objective is to create a seamless user experience, allowing Workday 
 
 While the Panopto API facilitates the embedding of individual videos, a more scalable and user-centric approach involves embedding entire Panopto folders.
 
+<img width="972" height="348" alt="image" src="https://github.com/user-attachments/assets/8578e65a-9ef2-4b32-9400-d59bace4421c" />
+
+
 The Panopto REST API provides specific endpoints to achieve this. An integration component within Workday can be developed to perform the following sequence:
 
 1.  **Identify user:** The component first identifies the authenticated Workday user.
