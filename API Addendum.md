@@ -12,7 +12,10 @@ This approach focuses on retrieving a specific folder's `EmbedUrl` from the Pano
 
 The Workday component first identifies the target folder's `id` and queries the Panopto API.
 
-[... Example HTTP GET request ...]
+```
+GET /api/v1/folders/{id}
+Authorization: Bearer <AUTH_TOKEN>`
+```
 
 ### 2. API Response: Folder Details Payload
 
