@@ -23,10 +23,10 @@ The API returns a JSON object containing the folder's metadata. The critical dat
 
 ```
 {
-  "Id": "26262a42-c51b-486d-9193-ab0d0151a14f",
+  "Id": "b36925af-fa27-4ec2-a64c-b39201022610",
   "Name": "Course Videos - Module 1",
   "Urls": {
-    "EmbedUrl": "https://<your-panopto-site>/Panopto/Pages/Embed.aspx?id=26262a42-c51b-486d-9193-ab0d0151a14f",
+    "EmbedUrl": "https://<your-panopto-site>/Panopto/Pages/EmbeddedList.aspx?folderID=b36925af-fa27-4ec2-a64c-b39201022610&embedded=1",
     "SharingUrl": "..."
   },
   "State": 0
