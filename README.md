@@ -36,17 +36,22 @@ The `EmbedUrl` provided by the API renders the standard Panopto folder page. Thi
 
 This approach involves building a *native* search bar within the main Workday UI, separate from the embedded Panopto folder.
 
+Critically, this approach **retains the full power of "Smart Search"**. The `GET /api/v1/sessions/search` endpoint queries the complete index, including spoken words (ASR), on-screen text (OCR), and slide content.
+
 This is a more complex integration, as the custom search bar would need to:
 
-1.  Capture the user's query from the Workday UI.
+1.  **Capture Query:** Capture the user's query from the Workday UI.
 
-2.  Pass this query to the Panopto API using the `GET /api/v1/sessions/search` endpoint.
+2.  **Pass Query to API:** Pass this query to the Panopto API using the `GET /api/v1/sessions/search` endpoint.
+    * To retrieve the specific timecodes for matches, the `includeFields=Context` parameter must be included in the API call.
 
-3.  Receive the JSON-formatted search results from the API.
+3.  **Receive and Parse Results:** Receive the JSON-formatted search results from the API. The developer is responsible for parsing this data, which will include the list of matching sessions and, if requested, the specific timecode contexts.
 
-4.  Render these results (a list of matching videos) natively within the Workday interface.
+4.  **Render Custom UI:** Render these results (a list of matching videos and their timecodes) natively within the Workday interface.
 
-While this method provides a more deeply integrated feel, it represents a significantly larger development undertaking than the in-built search provided by Approach 1.
+5.  **Control Player:** When a user clicks a timecode-specific result, the custom UI must use the separate **Panopto Embed API** (a client-side JavaScript library) to command the embedded video player to `seekTo()` that exact point in time.
+
+While this method provides the most deeply integrated feel, it represents a significantly larger development undertaking, as it requires building a custom search results UI and handling the video player-seeking logic.
 
 ## Relevant Links
 
