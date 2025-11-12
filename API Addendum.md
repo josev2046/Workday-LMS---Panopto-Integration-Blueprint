@@ -22,7 +22,15 @@ Authorization: Bearer <AUTH_TOKEN>`
 The API returns a JSON object containing the folder's metadata. The critical data point is the `Urls.EmbedUrl` property.
 
 ```
-[... Example JSON Response ...]
+{
+  "Id": "26262a42-c51b-486d-9193-ab0d0151a14f",
+  "Name": "Course Videos - Module 1",
+  "Urls": {
+    "EmbedUrl": "https://<your-panopto-site>/Panopto/Pages/Embed.aspx?id=26262a42-c51b-486d-9193-ab0d0151a14f",
+    "SharingUrl": "..."
+  },
+  "State": 0
+}
 ```
 
 ### 3. HTML Rendering: Embedded Iframe
@@ -30,7 +38,14 @@ The API returns a JSON object containing the folder's metadata. The critical dat
 The Workday UI uses the retrieved `EmbedUrl` as the `src` for an `iframe`, rendering the Panopto folder view.
 
 ```
-[... Example HTML iframe snippet ...]
+<iframe
+  src="https://<your-panopto-site>/Panopto/Pages/Embed.aspx?id=26262a42-c51b-486d-9193-ab0d0151a14f"
+  width="770"
+  height="433"
+  style="border: 1px solid #464646;"
+  allowfullscreen
+  allow="autoplay">
+</iframe>
 ```
 ---
 
@@ -45,7 +60,8 @@ The custom Workday search UI queries the Panopto search endpoint directly. The `
 #### API Request: Real-Time Search Query
 
 ```
-[... Example HTTP GET request with query parameters ...]
+GET /api/v1/sessions/search?searchQuery=integration&includeFields=Context
+Authorization: Bearer <AUTH_TOKEN>
 ```
 
 #### API Response: Search Results with Context
@@ -53,7 +69,26 @@ The custom Workday search UI queries the Panopto search endpoint directly. The `
 The API returns a JSON payload. The `Context` array provides the specific timestamps (in seconds) where the search term was found, enabling "Smart Search" functionality.
 
 ```
-[... Example JSON Response with search results ...]
+{
+  "Results": [
+    {
+      "SessionId": "a1a30113-1b91-47a7-8998-ab0c014798b5",
+      "SessionName": "Integration Blueprint Review",
+      "SessionUrl": "...",
+      "Context": [
+        {
+          "Timestamp": 124.5,
+          "Text": "...discussing the integration approach..."
+        },
+        {
+          "Timestamp": 331.0,
+          "Text": "...this integration is key..."
+        }
+      ]
+    }
+  ],
+  "TotalHits": 1
+}
 ```
 
 ### 2. Client-Side Player Control
@@ -63,7 +98,13 @@ After rendering these results, the user can click a specific time. This action t
 #### Client-Side Method Call: Player `seekTo`
 
 ```
-[... Example JavaScript function for player.seekTo() ...]
+// Assumes 'player' is an initialized Panopto Embed API object
+// and 'timeInSeconds' is 331.0 from the API response
+
+function onResultClick(timeInSeconds) {
+  // Use the Embed API's seekTo method to jump to the timestamp
+  player.seekTo(timeInSeconds);
+}
 ```
 
 ---
@@ -77,7 +118,28 @@ This approach does not involve real-time API calls to Panopto for search. Instea
 The indexing service extracts all relevant data from Panopto and formats it for the enterprise search index. This conceptual JSON object illustrates the data that would be indexed.
 
 ```
-[... Example JSON payload for the search index ...]
+{
+  "ObjectID": "panopto-a1a30113-1b91-47a7-8998-ab0c014798b5",
+  "Provider": "Panopto",
+  "Title": "Integration Blueprint Review",
+  "Description": "A meeting to review the Workday integration...",
+  "Url": "https://<your-panopto-site>/Panopto/Pages/Viewer.aspx?id=a1a30113-1b91-47a7-8998-ab0c014798b5",
+  "EmbedUrl": "https://<your-panopto-site>/Panopto/Pages/Embed.aspx?id=a1a30113-1b91-47a7-8998-ab0c014798b5",
+  
+  "Content": "integration approach integration is key...",
+  "Transcripts_ASR": "hello and welcome today we are discussing the integration approach...",
+  "OnScreenText_OCR": "Integration Architecture Diagram REST API...",
+  "SlideContent": "Key Considerations Approach 1 Approach 2...",
+  
+  "AllowedUsers": [
+    "workday-user@your-org.com",
+    "another-user@your-org.com"
+  ],
+  "AllowedGroups": [
+    "workday-group-id-for-all-staff",
+    "workday-group-id-for-it-dept"
+  ]
+}
 ```
 
 ### 2. Conceptual API Call: Querying the Enterprise Index
@@ -85,5 +147,19 @@ The indexing service extracts all relevant data from Panopto and formats it for 
 The Workday search bar queries this internal enterprise index, not Panopto. The search index is responsible for security trimming based on the `AllowedUsers` / `AllowedGroups` fields and the authenticated user's identity.
 
 ```
-[... Example API POST request to an enterprise search index (e.g., MS Graph) ...]
+POST /v1.0/search/query
+Content-Type: application/json
+
+{
+  "requests": [
+    {
+      "entityTypes": ["externalItem"],
+      "query": {
+        "queryString": "integration"
+      },
+      "from": 0,
+      "size": 10
+    }
+  ]
+}
 ```
