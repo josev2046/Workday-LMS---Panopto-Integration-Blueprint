@@ -59,6 +59,26 @@ This is however a more complex integration, as the custom search bar would need 
 
 While this method provides the most deeply integrated feel, it represents a significantly larger development undertaking, as it requires building a custom search results UI and handling the video player-seeking logic.
 
+### Approach 3: Federated Search Model (Advanced)
+
+This approach utilises a separate, pre-indexing process to integrate Panopto search data into a central enterprise search index, rather than querying the Panopto API in real-time. This is the architecture supported by the `panopto-index-connector` repository.
+
+This model fundamentally changes the integration architecture:
+
+1.  **Indexing Service:** A separate service (e.g., the `panopto-index-connector`) runs on a schedule. It queries Panopto, extracts all relevant metadata—including spoken words (ASR), on-screen text (OCR), and slide content—and "pushes" this data into an external search index (such as Microsoft Graph, Coveo, or Attivio).
+2.  **Permission Replication:** A critical part of this process is that the indexing service must also extract and replicate Panopto's permissions model into the external index to ensure correct security trimming.
+3.  **Unified Search:** The native Workday search bar is configured to query this central federated index, not the Panopto API.
+4.  **Rendering Results:** When a user searches, the Workday UI receives results from the federated index, which can include Panopto videos alongside other Workday content (like documents or courses). Clicking a Panopto result would then link to the content.
+
+**Key Considerations:**
+
+* **Benefit:** This is the only approach that provides a truly **unified search experience**, allowing users to find Panopto videos and other Workday resources from a single search bar.
+* **Complexity:** This is the most complex architecture. It requires deploying and maintaining both the indexing connector service and a separate federated search index that Workday can query.
+* **Data Freshness:** Search results are not real-time. Data is only as fresh as the last completed indexing cycle (e.g., every 30 minutes).
+* **Permissions:** Ensuring the accurate replication of Panopto's permissions in the external index is a complex but essential task to prevent data unauthorised access.
+
+This approach is suited for organisations that already have, or are planning to implement, an enterprise-wide federated search solution.
+
 ## Relevant links
 
 * **Panopto REST API Documentation:** <https://demo.hosted.panopto.com/Panopto/api/docs/index.html> (Note: Replace `demo.hosted.panopto.com` with your organisation's Panopto URL).
